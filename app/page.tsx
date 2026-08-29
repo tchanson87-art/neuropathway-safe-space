@@ -110,15 +110,15 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="relative">
-          <div className="overflow-hidden rounded-3xl border border-border shadow-sm">
+        <div className="relative flex justify-center">
+          <div className="relative flex aspect-square w-full max-w-sm items-center justify-center overflow-hidden rounded-full border border-accent/30 bg-[#0f1a3a] p-6 shadow-lg">
             <Image
-              src="/images/calm-horizon.png"
-              alt="A calm sea and gentle dawn sky in soft pastel colours"
-              width={1024}
-              height={1024}
+              src="/images/neuropathway-logo.jpeg"
+              alt="NeuroPathway Safe Space logo: a split brain within a golden orbit, above a winding pathway"
+              width={640}
+              height={640}
               priority
-              className="h-auto w-full"
+              className="animate-float-soft h-auto w-full rounded-full"
             />
           </div>
         </div>

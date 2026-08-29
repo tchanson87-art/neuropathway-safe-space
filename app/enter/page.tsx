@@ -2,6 +2,7 @@
 
 import { QRCodeSVG } from 'qrcode.react'
 import { ArrowLeft, KeyRound, QrCode, Check, ShieldCheck } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useMemo, useState } from 'react'
@@ -88,6 +89,16 @@ function EnterContent() {
 
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-5 pb-10">
         <div className="text-center">
+          <div className="mx-auto mb-5 flex size-24 items-center justify-center overflow-hidden rounded-full border border-accent/30 bg-[#0f1a3a] p-1.5 shadow-md">
+            <Image
+              src="/images/neuropathway-logo.jpeg"
+              alt="NeuroPathway Safe Space logo"
+              width={192}
+              height={192}
+              priority
+              className="size-full rounded-full object-cover"
+            />
+          </div>
           <h1 className="font-display text-2xl font-bold text-balance sm:text-3xl">
             Welcome back
           </h1>

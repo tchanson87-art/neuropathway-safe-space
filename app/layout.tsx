@@ -25,9 +25,13 @@ export const metadata: Metadata = {
   generator: 'v0.app',
   applicationName: 'NeuroPathway Safe Space',
   manifest: '/manifest.json',
+  icons: {
+    icon: '/images/neuropathway-logo.jpeg',
+    apple: '/images/neuropathway-logo.jpeg',
+  },
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
+    statusBarStyle: 'black-translucent',
     title: 'Safe Space',
   },
 }
@@ -38,8 +42,8 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#eef6f7' },
-    { media: '(prefers-color-scheme: dark)', color: '#1d2733' },
+    { media: '(prefers-color-scheme: light)', color: '#f4f6fd' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f1a3a' },
   ],
 }
 
