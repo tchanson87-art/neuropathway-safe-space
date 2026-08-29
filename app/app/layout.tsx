@@ -6,12 +6,12 @@ import { AppShell } from '@/components/safe-space/app-shell'
 import { useData } from '@/components/providers/data-provider'
 
 export default function AppAreaLayout({ children }: { children: React.ReactNode }) {
-  const { signedIn } = useData()
+  const { signedIn, sessionReady } = useData()
   const router = useRouter()
 
   useEffect(() => {
-    if (!signedIn) router.replace('/enter')
-  }, [signedIn, router])
+    if (sessionReady && !signedIn) router.replace('/enter')
+  }, [signedIn, sessionReady, router])
 
   if (!signedIn) {
     return (

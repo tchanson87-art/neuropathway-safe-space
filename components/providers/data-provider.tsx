@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useCallback,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -39,6 +40,7 @@ function uid() {
 
 type DataContextValue = {
   signedIn: boolean
+  sessionReady: boolean
   onboarded: boolean
   signIn: () => void
   signOut: () => void
@@ -73,8 +75,31 @@ type DataContextValue = {
 const DataContext = createContext<DataContextValue | null>(null)
 
 export function DataProvider({ children }: { children: ReactNode }) {
+  // UI-only session flag (not user content) so refreshes and deep links keep
+  // the demo signed in. Cleared on sign out.
+  const SESSION_KEY = 'safespace.session.v1'
   const [signedIn, setSignedIn] = useState(false)
+  const [sessionReady, setSessionReady] = useState(false)
   const [onboarded, setOnboarded] = useState(false)
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(SESSION_KEY) === '1') setSignedIn(true)
+    } catch {
+      /* ignore */
+    }
+    setSessionReady(true)
+  }, [])
+
+  const persistSignIn = useCallback((v: boolean) => {
+    setSignedIn(v)
+    try {
+      if (v) sessionStorage.setItem(SESSION_KEY, '1')
+      else sessionStorage.removeItem(SESSION_KEY)
+    } catch {
+      /* ignore */
+    }
+  }, [])
 
   const [profile] = useState<ChildProfile>(demoProfile)
   const [safeCircle] = useState<SafeCircleMember[]>(demoSafeCircle)
@@ -191,9 +216,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const value = useMemo<DataContextValue>(
     () => ({
       signedIn,
+      sessionReady,
       onboarded,
-      signIn: () => setSignedIn(true),
-      signOut: () => setSignedIn(false),
+      signIn: () => persistSignIn(true),
+      signOut: () => persistSignIn(false),
       completeOnboarding: () => setOnboarded(true),
       profile,
       safeCircle,
@@ -216,6 +242,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }),
     [
       signedIn,
+      sessionReady,
+      persistSignIn,
       onboarded,
       profile,
       safeCircle,

@@ -4,7 +4,7 @@ import { QRCodeSVG } from 'qrcode.react'
 import { ArrowLeft, KeyRound, QrCode, Check, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { Wordmark } from '@/components/safe-space/logo'
 import { useData } from '@/components/providers/data-provider'
 import { DEMO_ACCESS_CODE } from '@/lib/safe-space'
@@ -15,6 +15,20 @@ function normalise(v: string) {
 }
 
 export default function EnterPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-dvh items-center justify-center bg-background">
+          <Wordmark />
+        </div>
+      }
+    >
+      <EnterContent />
+    </Suspense>
+  )
+}
+
+function EnterContent() {
   const router = useRouter()
   const params = useSearchParams()
   const { signIn, signedIn } = useData()
