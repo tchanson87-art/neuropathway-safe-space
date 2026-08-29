@@ -1,0 +1,18 @@
+{
+  "name": "NeuroPathway Safe Space",
+  "short_name": "Safe Space",
+  "description": "A calm, child-led wellbeing space to express feelings and share your voice with trusted adults.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eef6f7",
+  "theme_color": "#eef6f7",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

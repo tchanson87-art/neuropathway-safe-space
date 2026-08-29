@@ -1,35 +1,45 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Nunito, Baloo_2 } from 'next/font/google'
+import { Suspense } from 'react'
 import './globals.css'
+import { SettingsProvider } from '@/components/providers/settings-provider'
+import { DataProvider } from '@/components/providers/data-provider'
+
+const nunito = Nunito({
+  subsets: ['latin'],
+  variable: '--font-nunito',
+  display: 'swap',
+})
+
+const baloo = Baloo_2({
+  subsets: ['latin'],
+  variable: '--font-baloo',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'NeuroPathway Safe Space',
+  description:
+    'A calm, child-led wellbeing space to express feelings, record experiences and share your voice with trusted adults. Part of the NeuroPathway ecosystem by Social Innovation CIC.',
   generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+  applicationName: 'NeuroPathway Safe Space',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Safe Space',
   },
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
+    { media: '(prefers-color-scheme: light)', color: '#eef6f7' },
+    { media: '(prefers-color-scheme: dark)', color: '#1d2733' },
   ],
 }
 
@@ -39,9 +49,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
-        {children}
+    <html lang="en" suppressHydrationWarning className="bg-background">
+      <body className={`${nunito.variable} ${baloo.variable} font-sans antialiased`}>
+        <Suspense fallback={null}>
+          <SettingsProvider>
+            <DataProvider>{children}</DataProvider>
+          </SettingsProvider>
+        </Suspense>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
