@@ -36,6 +36,17 @@ export function SiteFooter() {
           under Social Innovation CIC. This is a demonstration prototype using fictional
           information only.
         </p>
+
+        <div className="mt-8 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            &copy; {new Date().getFullYear()} NeuroPathway&trade; Safe Space. All rights
+            reserved.
+          </p>
+          <p>
+            NeuroPathway Social Innovation CIC &middot; Company No.{' '}
+            <span className="font-medium text-foreground">17366103</span>
+          </p>
+        </div>
       </div>
     </footer>
   )
