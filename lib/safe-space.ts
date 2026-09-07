@@ -363,19 +363,19 @@ export const demoAudit: AuditEntry[] = [
 
 // UI option lists (fixed, professionally-styled interface content)
 
-export const EMOTION_OPTIONS: { label: string; token: string }[] = [
-  { label: 'Happy', token: 'sun' },
-  { label: 'Calm', token: 'mint' },
-  { label: 'Hopeful', token: 'teal' },
-  { label: 'Okay', token: 'sky' },
-  { label: 'Tired', token: 'lavender' },
-  { label: 'Worried', token: 'sky' },
-  { label: 'Sad', token: 'sky' },
-  { label: 'Frustrated', token: 'peach' },
-  { label: 'Angry', token: 'peach' },
-  { label: 'Overwhelmed', token: 'lavender' },
-  { label: 'Excited', token: 'sun' },
-  { label: 'Unsure', token: 'muted' },
+export const EMOTION_OPTIONS: { label: string; token: string; face: string }[] = [
+  { label: 'Happy', token: 'sun', face: '😊' },
+  { label: 'Calm', token: 'mint', face: '😌' },
+  { label: 'Hopeful', token: 'teal', face: '🙂' },
+  { label: 'Okay', token: 'sky', face: '😐' },
+  { label: 'Excited', token: 'sun', face: '🤩' },
+  { label: 'Tired', token: 'lavender', face: '🥱' },
+  { label: 'Worried', token: 'sky', face: '😟' },
+  { label: 'Sad', token: 'sky', face: '😢' },
+  { label: 'Frustrated', token: 'peach', face: '😤' },
+  { label: 'Angry', token: 'peach', face: '😠' },
+  { label: 'Overwhelmed', token: 'lavender', face: '😵‍💫' },
+  { label: 'Unsure', token: 'muted', face: '🤔' },
 ]
 
 export const TRIGGER_OPTIONS = [

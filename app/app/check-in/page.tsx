@@ -100,20 +100,42 @@ export default function CheckInPage() {
         readAloudText="How are you feeling? Pick as many or as few as you like. There is no wrong answer, and you choose who sees this."
       />
 
-      <div className="space-y-6 pb-24 sm:pb-16">
+      <div className="space-y-6 pb-8">
         <Card className="p-5">
           <SectionLabel>My feelings right now</SectionLabel>
-          <div className="flex flex-wrap gap-2">
-            {EMOTION_OPTIONS.map((e) => (
-              <ChoiceChip
-                key={e.label}
-                selected={emotions.includes(e.label)}
-                onToggle={() => setEmotions((p) => toggle(p, e.label))}
-                tokenColor={e.token}
-              >
-                {e.label}
-              </ChoiceChip>
-            ))}
+          <p className="-mt-1 mb-4 text-sm text-muted-foreground">
+            Tap a face. Pick as many as you like.
+          </p>
+          <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4">
+            {EMOTION_OPTIONS.map((e) => {
+              const selected = emotions.includes(e.label)
+              return (
+                <button
+                  key={e.label}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => setEmotions((p) => toggle(p, e.label))}
+                  className={cn(
+                    'flex min-h-24 flex-col items-center justify-center gap-1.5 rounded-2xl border-2 p-2 transition-all focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none',
+                    selected
+                      ? 'border-primary bg-primary/8 scale-[1.02]'
+                      : 'border-border hover:border-primary/40',
+                  )}
+                >
+                  <span aria-hidden="true" className="text-4xl leading-none">
+                    {e.face}
+                  </span>
+                  <span
+                    className={cn(
+                      'text-sm font-semibold',
+                      selected ? 'text-primary' : 'text-foreground',
+                    )}
+                  >
+                    {e.label}
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </Card>
 
@@ -262,16 +284,14 @@ export default function CheckInPage() {
           </div>
         </Card>
 
-        <div className="sticky bottom-20 z-10 sm:bottom-4">
-          <button
-            onClick={save}
-            disabled={!canSave}
-            className="flex w-full min-h-14 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground shadow-lg transition-transform enabled:hover:scale-[1.01] disabled:opacity-50 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-          >
-            <Heart className="size-5" />
-            {canSave ? 'Save my check-in' : 'Pick a feeling to continue'}
-          </button>
-        </div>
+        <button
+          onClick={save}
+          disabled={!canSave}
+          className="flex w-full min-h-14 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground shadow-sm transition-transform enabled:hover:scale-[1.01] disabled:opacity-50 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+        >
+          <Heart className="size-5" />
+          {canSave ? 'Save my check-in' : 'Pick a feeling to continue'}
+        </button>
       </div>
     </div>
   )

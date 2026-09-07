@@ -13,13 +13,16 @@ import {
   History,
   Eye,
   LogOut,
+  ChevronRight,
 } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import { PageHeader } from '@/components/safe-space/page-header'
 import { SectionLabel } from '@/components/safe-space/primitives'
 import { useSettings, type TextSize } from '@/components/providers/settings-provider'
 import { useData } from '@/components/providers/data-provider'
+import { POLICIES } from '@/lib/policies'
 import { cn } from '@/lib/utils'
 
 function Toggle({
@@ -254,6 +257,35 @@ export default function SettingsPage() {
             </li>
           ))}
         </ul>
+      </Card>
+
+      <Card className="mb-6 p-5">
+        <SectionLabel>Policies &amp; governance</SectionLabel>
+        <p className="mb-4 text-sm text-muted-foreground leading-relaxed">
+          How Safe Space keeps you safe, protects your information, and keeps people (not
+          computers) in charge of decisions.
+        </p>
+        <div className="flex flex-col divide-y divide-border">
+          {POLICIES.map((policy) => {
+            const Icon = policy.icon
+            return (
+              <Link
+                key={policy.slug}
+                href={`/policies/${policy.slug}`}
+                className="flex items-center gap-3 py-3 transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+              >
+                <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Icon className="size-5" />
+                </span>
+                <span className="flex-1">
+                  <span className="block font-medium">{policy.title}</span>
+                  <span className="text-sm text-muted-foreground">{policy.summary}</span>
+                </span>
+                <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+              </Link>
+            )
+          })}
+        </div>
       </Card>
 
       <button
