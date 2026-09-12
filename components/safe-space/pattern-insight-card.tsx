@@ -40,14 +40,20 @@ export function PatternInsightCard() {
     result && !('insufficient' in result) && !('error' in result) ? result : null
 
   return (
-    <Card className="p-6">
+    <Card
+      className="rounded-[1.6rem] border-2 p-6"
+      style={{
+        backgroundColor: 'color-mix(in oklab, var(--lavender) 14%, var(--card))',
+        borderColor: 'color-mix(in oklab, var(--lavender) 34%, var(--card))',
+      }}
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <span
-            className="flex size-11 shrink-0 items-center justify-center rounded-2xl"
-            style={{ backgroundColor: 'color-mix(in oklab, var(--lavender) 35%, var(--card))' }}
+            className="sticker flex size-12 shrink-0 items-center justify-center rounded-2xl"
+            style={{ backgroundColor: 'color-mix(in oklab, var(--lavender) 58%, var(--card))' }}
           >
-            <Sparkles className="size-5 text-foreground" />
+            <Sparkles className="size-5 text-foreground" strokeWidth={2.2} />
           </span>
           <div>
             <h3 className="font-display text-lg font-semibold">Gentle reflection</h3>

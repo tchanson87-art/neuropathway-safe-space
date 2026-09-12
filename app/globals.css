@@ -229,3 +229,25 @@ html { font-size: calc(100% * var(--text-scale)); }
   0%, 100% { transform: scale(0.72); opacity: 0.75; }
   50% { transform: scale(1); opacity: 1; }
 }
+
+/* Friendly "sticker" tile — chunky rounded badge with a soft drop shadow,
+   used for the colourful area icons on the home screen. */
+@utility sticker {
+  box-shadow:
+    0 6px 14px -6px color-mix(in oklab, var(--foreground) 22%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, white 30%, transparent);
+}
+.low-stim .sticker {
+  box-shadow: 0 2px 6px -4px color-mix(in oklab, var(--foreground) 18%, transparent);
+}
+
+/* Gentle one-off wiggle so tapped/hovered tiles feel alive but never busy. */
+@keyframes wiggle-soft {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-4deg); }
+  65% { transform: rotate(3deg); }
+}
+.group:hover .animate-wiggle,
+.group:focus-visible .animate-wiggle {
+  animation: wiggle-soft 0.5s ease-in-out;
+}
