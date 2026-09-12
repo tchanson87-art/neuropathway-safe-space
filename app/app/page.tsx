@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { ReadAloud } from '@/components/safe-space/read-aloud'
+import { PatternInsightCard } from '@/components/safe-space/pattern-insight-card'
 import { useData } from '@/components/providers/data-provider'
 import { useSettings } from '@/components/providers/settings-provider'
 
@@ -138,6 +139,10 @@ export default function HomePage() {
           </Card>
         </section>
       )}
+
+      <section aria-label="Gentle reflection">
+        <PatternInsightCard />
+      </section>
 
       <section aria-label="Explore your space">
         <h2 className="mb-4 font-display text-lg font-semibold">Your space</h2>
