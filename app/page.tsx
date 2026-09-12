@@ -67,6 +67,12 @@ export default function LandingPage() {
             {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
           </button>
           <Link
+            href="/pro"
+            className="hidden min-h-11 items-center gap-2 rounded-full border-2 border-border px-4 text-sm font-bold text-foreground transition-colors hover:bg-muted sm:inline-flex"
+          >
+            For professionals
+          </Link>
+          <Link
             href="/enter"
             className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.03]"
           >

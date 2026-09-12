@@ -68,11 +68,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </Link>
         <nav className="flex flex-1 flex-col gap-1" aria-label="Main">
           {PRIMARY.map((item) => (
-            <NavLink key={item.href} item={item} active={isActive(pathname, item.href)} />
+            <NavLink key={item.href} item={item} active={!!isActive(pathname, item.href)} />
           ))}
           <div className="my-3 h-px bg-sidebar-border" />
           {SECONDARY.map((item) => (
-            <NavLink key={item.href} item={item} active={isActive(pathname, item.href)} />
+            <NavLink key={item.href} item={item} active={!!isActive(pathname, item.href)} />
           ))}
         </nav>
         <div className="flex flex-col gap-1">
