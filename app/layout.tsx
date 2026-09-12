@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
 import { Nunito, Baloo_2 } from 'next/font/google'
 import { Suspense } from 'react'
@@ -60,7 +61,12 @@ export default function RootLayout({
             <DataProvider>{children}</DataProvider>
           </SettingsProvider>
         </Suspense>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NODE_ENV === 'production' && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   )
