@@ -40,6 +40,60 @@ export function ConfidenceBadge({ level }: { level: string }) {
   )
 }
 
+const RISK_BAND_STYLE: Record<string, string> = {
+  green: 'bg-mint/25 text-foreground',
+  amber: 'bg-sun/30 text-foreground',
+  red: 'bg-destructive/15 text-destructive',
+}
+
+const RISK_BAND_DOT: Record<string, string> = {
+  green: 'bg-mint',
+  amber: 'bg-sun',
+  red: 'bg-destructive',
+}
+
+const RISK_BAND_TEXT: Record<string, string> = {
+  green: 'Green',
+  amber: 'Amber',
+  red: 'Red',
+}
+
+export function RiskBandBadge({ band }: { band: string }) {
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold',
+        RISK_BAND_STYLE[band] ?? RISK_BAND_STYLE.green,
+      )}
+    >
+      <span className={cn('size-2 rounded-full', RISK_BAND_DOT[band] ?? RISK_BAND_DOT.green)} aria-hidden="true" />
+      {RISK_BAND_TEXT[band] ?? 'Green'} risk band
+    </span>
+  )
+}
+
+const ESCALATION_STYLE: Record<string, string> = {
+  monitor: 'bg-muted text-muted-foreground',
+  sen_support: 'bg-sky/20 text-foreground',
+  professional_review: 'bg-sun/30 text-foreground',
+  urgent_review: 'bg-destructive/15 text-destructive',
+}
+
+const ESCALATION_TEXT: Record<string, string> = {
+  monitor: 'Monitor',
+  sen_support: 'SEN Support',
+  professional_review: 'Professional Review',
+  urgent_review: 'Urgent Review',
+}
+
+export function EscalationBadge({ level }: { level: string }) {
+  return (
+    <span className={cn('rounded-full px-2.5 py-0.5 text-xs font-semibold', ESCALATION_STYLE[level] ?? ESCALATION_STYLE.monitor)}>
+      {ESCALATION_TEXT[level] ?? 'Monitor'}
+    </span>
+  )
+}
+
 const STATUS_STYLE: Record<string, string> = {
   awaiting_review: 'bg-sun/25 text-foreground',
   accepted: 'bg-mint/25 text-foreground',

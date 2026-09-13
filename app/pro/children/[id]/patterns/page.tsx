@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Link2 } from 'lucide-react'
 import { getChild, listPatterns, getPatternEvidence } from '@/lib/np/data'
-import { EmptyState, Pill, AiTag, ConfidenceBadge, StatusBadge, formatDate } from '@/components/np/ui'
+import { EmptyState, Pill, AiTag, ConfidenceBadge, RiskBandBadge, EscalationBadge, StatusBadge, formatDate } from '@/components/np/ui'
 import { DOMAIN_LABELS, SETTING_LABELS } from '@/lib/np/types'
 import { ChildHeader } from '../child-header'
 import { EngineButton, ReviewControls } from './pattern-controls'
@@ -40,6 +40,8 @@ export default async function PatternsPage({ params }: { params: Promise<{ id: s
             <li key={p.id} className="rounded-3xl border border-border bg-card p-5">
               <div className="mb-3 flex flex-wrap items-center gap-2">
                 <Pill tone="teal">{DOMAIN_LABELS[p.domain] ?? p.domain}</Pill>
+                <RiskBandBadge band={p.risk_band} />
+                <EscalationBadge level={p.escalation} />
                 <ConfidenceBadge level={p.confidence} />
                 <StatusBadge status={p.status} />
                 {p.is_ai_assisted ? <AiTag /> : null}
@@ -52,6 +54,14 @@ export default async function PatternsPage({ params }: { params: Promise<{ id: s
                 <p className="mt-1 text-muted-foreground leading-relaxed">{p.basis}</p>
                 <p className="mt-2 flex flex-wrap gap-2 text-xs text-muted-foreground">
                   <span>Frequency: {p.frequency}</span>
+                  {p.occurrences_in_window && p.window_days ? (
+                    <>
+                      <span aria-hidden>·</span>
+                      <span>
+                        Peak {p.occurrences_in_window} in any {p.window_days} days
+                      </span>
+                    </>
+                  ) : null}
                   <span aria-hidden>·</span>
                   <span>Settings: {p.settings.map((s) => SETTING_LABELS[s] ?? s).join(', ') || '—'}</span>
                   <span aria-hidden>·</span>

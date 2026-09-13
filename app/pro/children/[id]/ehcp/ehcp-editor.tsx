@@ -7,21 +7,101 @@ import { saveEhcpSections } from '@/lib/np/actions'
 export interface EhcpSection {
   key: string
   label: string
+  statutory: string
   hint?: string
 }
 
+/**
+ * Statutory EHC plan sections A–K, per the SEND Code of Practice (0–25 years),
+ * which is statutory guidance issued under the Children and Families Act 2014.
+ */
+export const STATUTORY_TITLES: Record<string, string> = {
+  A: 'Section A — Views, interests and aspirations',
+  B: 'Section B — Special educational needs (SEN)',
+  C: 'Section C — Health needs related to SEN',
+  D: 'Section D — Social care needs related to SEN',
+  E: 'Section E — Outcomes',
+  F: 'Section F — Special educational provision',
+  G: 'Section G — Health provision',
+  H: 'Section H — Social care provision',
+  I: 'Section I — Placement',
+  J: 'Section J — Personal budget',
+  K: 'Section K — Advice and information (appendices)',
+}
+
+/** The provision of the Children and Families Act 2014 each section derives from. */
+export const STATUTORY_BASIS: Record<string, string> = {
+  A: 'Children and Families Act 2014, s.19 (having regard to the views, wishes and feelings of the child and parents)',
+  B: 'Children and Families Act 2014, s.20 (meaning of special educational needs) & s.37(2)',
+  C: 'Children and Families Act 2014, s.37(2); SEND Regulations 2014',
+  D: 'Children and Families Act 2014, s.37(2); Children Act 1989',
+  E: 'Children and Families Act 2014, s.37(2) (outcomes sought)',
+  F: 'Children and Families Act 2014, s.37(2) & s.42 (duty to secure special educational provision)',
+  G: 'Children and Families Act 2014, s.42 (duty to secure health care provision)',
+  H: 'Chronically Sick and Disabled Persons Act 1970, s.2 (H1) & Children Act 1989 (H2)',
+  I: 'Children and Families Act 2014, s.33 & s.39–40 (naming a placement)',
+  J: 'Children and Families Act 2014, s.49 (personal budgets)',
+  K: 'Children and Families Act 2014, s.37; SEND Regulations 2014, reg. 6 (advice and information)',
+}
+
 export const EHCP_SECTIONS: EhcpSection[] = [
-  { key: 'child_family_views', label: 'Child and family views' },
-  { key: 'strengths_aspirations', label: 'Strengths and aspirations' },
-  { key: 'communication_interaction', label: 'Communication and interaction' },
-  { key: 'cognition_learning', label: 'Cognition and learning' },
-  { key: 'semh', label: 'Social, emotional and mental-health needs' },
-  { key: 'sensory_physical', label: 'Sensory or physical needs' },
-  { key: 'current_provision', label: 'Current provision' },
-  { key: 'support_tried', label: 'Support already tried' },
-  { key: 'outcomes_impact', label: 'Outcomes and impact' },
-  { key: 'unmet_needs', label: 'Unmet needs' },
-  { key: 'evidence_gaps', label: 'Evidence gaps requiring completion' },
+  { key: 'child_family_views', statutory: 'A', label: 'Child and family views' },
+  { key: 'strengths_aspirations', statutory: 'A', label: 'Strengths and aspirations' },
+  { key: 'communication_interaction', statutory: 'B', label: 'Communication and interaction' },
+  { key: 'cognition_learning', statutory: 'B', label: 'Cognition and learning' },
+  { key: 'semh', statutory: 'B', label: 'Social, emotional and mental-health needs' },
+  { key: 'sensory_physical', statutory: 'B', label: 'Sensory or physical needs' },
+  { key: 'unmet_needs', statutory: 'B', label: 'Unmet needs' },
+  {
+    key: 'health_needs',
+    statutory: 'C',
+    label: 'Health needs related to SEN',
+    hint: 'Only health needs that relate to the child\u2019s SEN. Leave blank if none are evidenced.',
+  },
+  {
+    key: 'social_care_needs',
+    statutory: 'D',
+    label: 'Social care needs related to SEN',
+    hint: 'Social care needs identified under the Children and Families Act. Leave blank if none are evidenced.',
+  },
+  { key: 'outcomes_impact', statutory: 'E', label: 'Outcomes (SMART) and impact' },
+  { key: 'current_provision', statutory: 'F', label: 'Current special educational provision' },
+  { key: 'support_tried', statutory: 'F', label: 'Support already tried' },
+  {
+    key: 'health_provision',
+    statutory: 'G',
+    label: 'Health provision',
+    hint: 'Provision required to meet the Section C needs. For a clinician to complete.',
+  },
+  {
+    key: 'social_care_provision',
+    statutory: 'H',
+    label: 'Social care provision',
+    hint: 'Provision under the Chronically Sick and Disabled Persons Act (H1) and other social care (H2).',
+  },
+  {
+    key: 'placement',
+    statutory: 'I',
+    label: 'Placement — type of setting',
+    hint: 'The type of setting that can meet needs. The named school is added by the local authority.',
+  },
+  {
+    key: 'personal_budget',
+    statutory: 'J',
+    label: 'Personal budget',
+    hint: 'Record if a personal budget has been requested or agreed. Optional.',
+  },
+  {
+    key: 'evidence_appendices',
+    statutory: 'K',
+    label: 'Advice and information gathered',
+    hint: 'List the reports and records this pack draws on. Every claim above should trace to one.',
+  },
+  {
+    key: 'evidence_gaps',
+    statutory: 'K',
+    label: 'Evidence gaps requiring completion',
+  },
 ]
 
 export function EhcpEditor({
@@ -75,28 +155,47 @@ export function EhcpEditor({
         {error ? <span className="text-sm text-destructive">{error}</span> : null}
       </div>
 
-      <div className="space-y-4">
-        {EHCP_SECTIONS.map((s) => {
-          const value = sections[s.key] ?? ''
-          const empty = value.trim().length === 0
+      <div className="space-y-6">
+        {Object.keys(STATUTORY_TITLES).map((letter) => {
+          const groupSections = EHCP_SECTIONS.filter((s) => s.statutory === letter)
+          if (groupSections.length === 0) return null
           return (
-            <div key={s.key} className="rounded-2xl border border-border bg-card p-4 print:border-0 print:p-0">
-              <label htmlFor={`ehcp-${s.key}`} className="mb-1.5 flex items-center justify-between gap-2">
-                <span className="font-display font-bold">{s.label}</span>
-                {empty ? (
-                  <span className="rounded-full bg-peach/25 px-2 py-0.5 text-xs font-semibold text-foreground print:hidden">
-                    Evidence gap
-                  </span>
+            <div key={letter} className="space-y-3">
+              <div>
+                <h3 className="font-display text-sm font-bold uppercase tracking-wide text-primary print:text-foreground">
+                  {STATUTORY_TITLES[letter]}
+                </h3>
+                {STATUTORY_BASIS[letter] ? (
+                  <p className="mt-0.5 text-xs text-muted-foreground">{STATUTORY_BASIS[letter]}</p>
                 ) : null}
-              </label>
-              <textarea
-                id={`ehcp-${s.key}`}
-                value={value}
-                onChange={(e) => setSections((prev) => ({ ...prev, [s.key]: e.target.value }))}
-                rows={3}
-                placeholder="Draft from verified records — do not invent evidence."
-                className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-base outline-none focus-visible:ring-2 focus-visible:ring-ring/40 print:border-0 print:px-0"
-              />
+              </div>
+              {groupSections.map((s) => {
+                const value = sections[s.key] ?? ''
+                const empty = value.trim().length === 0
+                return (
+                  <div key={s.key} className="rounded-2xl border border-border bg-card p-4 print:border-0 print:p-0">
+                    <label htmlFor={`ehcp-${s.key}`} className="mb-1.5 flex items-center justify-between gap-2">
+                      <span className="font-display font-bold">{s.label}</span>
+                      {empty ? (
+                        <span className="rounded-full bg-peach/25 px-2 py-0.5 text-xs font-semibold text-foreground print:hidden">
+                          Evidence gap
+                        </span>
+                      ) : null}
+                    </label>
+                    {s.hint ? (
+                      <p className="mb-2 text-xs text-muted-foreground leading-relaxed">{s.hint}</p>
+                    ) : null}
+                    <textarea
+                      id={`ehcp-${s.key}`}
+                      value={value}
+                      onChange={(e) => setSections((prev) => ({ ...prev, [s.key]: e.target.value }))}
+                      rows={3}
+                      placeholder="Draft from verified records — do not invent evidence."
+                      className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-base outline-none focus-visible:ring-2 focus-visible:ring-ring/40 print:border-0 print:px-0"
+                    />
+                  </div>
+                )
+              })}
             </div>
           )
         })}

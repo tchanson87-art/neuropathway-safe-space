@@ -112,10 +112,27 @@ export interface NpPattern {
   date_range_start: string | null
   date_range_end: string | null
   confidence: 'low' | 'moderate' | 'high'
+  risk_band: 'green' | 'amber' | 'red'
+  escalation: 'monitor' | 'sen_support' | 'professional_review' | 'urgent_review'
+  occurrences_in_window: number | null
+  window_days: number | null
   status: 'awaiting_review' | 'accepted' | 'rejected' | 'needs_evidence' | 'amended'
   is_ai_assisted: boolean
   model_version: string | null
   created_at: string
+}
+
+export const RISK_BAND_LABELS: Record<string, string> = {
+  green: 'Green — monitor',
+  amber: 'Amber — emerging need',
+  red: 'Red — needs professional review',
+}
+
+export const ESCALATION_LABELS: Record<string, string> = {
+  monitor: 'Monitor',
+  sen_support: 'SEN Support',
+  professional_review: 'Professional Review',
+  urgent_review: 'Urgent Review',
 }
 
 export interface NpSupportPlan {
