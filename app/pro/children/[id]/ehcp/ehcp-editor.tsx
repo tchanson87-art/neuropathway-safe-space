@@ -11,7 +11,10 @@ export interface EhcpSection {
   hint?: string
 }
 
-/** Statutory EHC plan sections A–K, per the SEND Code of Practice (0–25 years). */
+/**
+ * Statutory EHC plan sections A–K, per the SEND Code of Practice (0–25 years),
+ * which is statutory guidance issued under the Children and Families Act 2014.
+ */
 export const STATUTORY_TITLES: Record<string, string> = {
   A: 'Section A — Views, interests and aspirations',
   B: 'Section B — Special educational needs (SEN)',
@@ -24,6 +27,21 @@ export const STATUTORY_TITLES: Record<string, string> = {
   I: 'Section I — Placement',
   J: 'Section J — Personal budget',
   K: 'Section K — Advice and information (appendices)',
+}
+
+/** The provision of the Children and Families Act 2014 each section derives from. */
+export const STATUTORY_BASIS: Record<string, string> = {
+  A: 'Children and Families Act 2014, s.19 (having regard to the views, wishes and feelings of the child and parents)',
+  B: 'Children and Families Act 2014, s.20 (meaning of special educational needs) & s.37(2)',
+  C: 'Children and Families Act 2014, s.37(2); SEND Regulations 2014',
+  D: 'Children and Families Act 2014, s.37(2); Children Act 1989',
+  E: 'Children and Families Act 2014, s.37(2) (outcomes sought)',
+  F: 'Children and Families Act 2014, s.37(2) & s.42 (duty to secure special educational provision)',
+  G: 'Children and Families Act 2014, s.42 (duty to secure health care provision)',
+  H: 'Chronically Sick and Disabled Persons Act 1970, s.2 (H1) & Children Act 1989 (H2)',
+  I: 'Children and Families Act 2014, s.33 & s.39–40 (naming a placement)',
+  J: 'Children and Families Act 2014, s.49 (personal budgets)',
+  K: 'Children and Families Act 2014, s.37; SEND Regulations 2014, reg. 6 (advice and information)',
 }
 
 export const EHCP_SECTIONS: EhcpSection[] = [
@@ -143,9 +161,14 @@ export function EhcpEditor({
           if (groupSections.length === 0) return null
           return (
             <div key={letter} className="space-y-3">
-              <h3 className="font-display text-sm font-bold uppercase tracking-wide text-primary print:text-foreground">
-                {STATUTORY_TITLES[letter]}
-              </h3>
+              <div>
+                <h3 className="font-display text-sm font-bold uppercase tracking-wide text-primary print:text-foreground">
+                  {STATUTORY_TITLES[letter]}
+                </h3>
+                {STATUTORY_BASIS[letter] ? (
+                  <p className="mt-0.5 text-xs text-muted-foreground">{STATUTORY_BASIS[letter]}</p>
+                ) : null}
+              </div>
               {groupSections.map((s) => {
                 const value = sections[s.key] ?? ''
                 const empty = value.trim().length === 0

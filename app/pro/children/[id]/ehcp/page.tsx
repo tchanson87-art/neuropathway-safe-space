@@ -39,7 +39,19 @@ export default async function EhcpPage({ params }: { params: Promise<{ id: strin
         <div className="mt-3">
           <AiTag />
         </div>
+        <p className="mt-3 max-w-2xl rounded-xl border border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground leading-relaxed">
+          Sections follow the statutory EHC plan structure (A–K) set out in the SEND Code of
+          Practice (2015) — statutory guidance issued under the{' '}
+          <span className="font-semibold text-foreground">Children and Families Act 2014</span>.
+          Each section shows the provision of the Act it derives from.
+        </p>
       </div>
+
+      {/* Legal basis for the printable pack */}
+      <p className="hidden text-xs text-muted-foreground print:block">
+        Prepared under the statutory EHC plan framework (SEND Code of Practice 2015), issued under
+        the Children and Families Act 2014.
+      </p>
 
       {draft ? (
         <EhcpEditor childId={id} draftId={draft.id} initialSections={draft.sections ?? {}} />
