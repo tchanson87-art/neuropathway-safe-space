@@ -26,7 +26,6 @@ const ROLE_LABELS: Record<string, string> = {
   safeguarding: 'Safeguarding reviewer',
   org_admin: 'Organisation admin',
   platform_admin: 'Platform admin',
-  child: 'Child / young person',
 }
 
 export default async function ProLayout({ children }: { children: ReactNode }) {

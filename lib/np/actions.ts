@@ -112,10 +112,14 @@ export async function runEngine(childId: string): Promise<ActionResult> {
         summary: c.summary,
         basis: c.basis,
         frequency: c.frequency,
+        occurrences_in_window: c.occurrencesInWindow,
+        window_days: c.windowDays,
         settings: c.settings,
         date_range_start: c.dateRangeStart,
         date_range_end: c.dateRangeEnd,
         confidence: c.confidence,
+        risk_band: c.riskBand,
+        escalation: c.escalation,
         status: 'awaiting_review',
         is_ai_assisted: true,
         model_version: ENGINE_VERSION,
@@ -138,6 +142,23 @@ export async function runEngine(childId: string): Promise<ActionResult> {
       await supabase.from('np_pattern_evidence').insert(links)
     }
   }
+
+  // Provenance: record that the deterministic engine ran, with its version.
+  await supabase.from('ai_outputs').insert({
+    surface: 'pro',
+    output_type: 'pattern_engine',
+    child_id: childId,
+    engine_version: ENGINE_VERSION,
+    safety_alert: false,
+    summary: `${created} new candidate(s) from ${observations.length} observations`,
+    meta: {
+      candidates: candidates.length,
+      bands: candidates.reduce<Record<string, number>>((acc, c) => {
+        acc[c.riskBand] = (acc[c.riskBand] ?? 0) + 1
+        return acc
+      }, {}),
+    },
+  })
 
   await audit('pattern.generate', {
     childId,

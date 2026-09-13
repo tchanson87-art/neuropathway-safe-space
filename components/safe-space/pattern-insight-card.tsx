@@ -99,6 +99,10 @@ export function PatternInsightCard() {
                   please reach out to someone in your Safe Circle, or an adult you trust, as
                   soon as you can.
                 </p>
+                <p className="mt-2 text-sm font-medium leading-relaxed text-foreground">
+                  A safeguarding review has been logged so a trusted adult can check in with
+                  you. You are not on your own with this.
+                </p>
               </div>
             </div>
           )}

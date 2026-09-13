@@ -4,6 +4,9 @@ import { createClient } from '@/lib/supabase/server'
 
 export const maxDuration = 30
 
+const MODEL = 'openai/gpt-4.1-mini'
+const PROMPT_VERSION = 'safe-space-insight-v1'
+
 const InsightSchema = z.object({
   safetyAlert: z
     .boolean()
@@ -76,11 +79,59 @@ export async function POST() {
 
   try {
     const { object } = await generateObject({
-      model: 'openai/gpt-4.1-mini',
+      model: MODEL,
       schema: InsightSchema,
       system,
       prompt: `Here is the child's own fictional/private data (check-ins and journal entries) as JSON. Reflect only on what is actually present.\n\n${evidence}`,
     })
+
+    // Provenance: log every AI output with its model + prompt version so the
+    // reflection is fully traceable and auditable later.
+    const { data: aiOutput } = await supabase
+      .from('ai_outputs')
+      .insert({
+        surface: 'safe_space',
+        output_type: 'insight',
+        user_id: user.id,
+        model: MODEL,
+        prompt_version: PROMPT_VERSION,
+        evidence_strength: object.evidenceStrength,
+        safety_alert: object.safetyAlert,
+        summary: object.summary,
+        meta: { entries: totalEntries },
+      })
+      .select('id')
+      .single()
+
+    // Safety pre-screen result — one row per screen, flagged or not.
+    await supabase.from('safety_screen_results').insert({
+      ai_output_id: aiOutput?.id ?? null,
+      user_id: user.id,
+      flagged: object.safetyAlert,
+      categories: object.safetyAlert ? ['self_harm_or_immediate_danger'] : [],
+      detail: object.safetyAlert
+        ? 'Automated pre-screen flagged a possible safeguarding signal in the child\u2019s entries.'
+        : null,
+    })
+
+    // If a safeguarding signal appears, raise an adult-review record and audit it.
+    // This turns the flag into an actionable record rather than a transient boolean.
+    if (object.safetyAlert) {
+      await supabase.from('safespace_safety_alerts').insert({
+        user_id: user.id,
+        ai_output_id: aiOutput?.id ?? null,
+        status: 'open',
+        summary:
+          'A safeguarding pre-screen flagged a possible sign of self-harm, distress or danger in recent entries. A trusted adult should review this promptly.',
+        source: 'safe_space_ai',
+      })
+      await supabase.from('np_audit_logs').insert({
+        actor_id: user.id,
+        actor_role: 'child',
+        action: 'safety.alert.raised',
+        detail: `Safe Space AI pre-screen raised a safeguarding review (ai_output ${aiOutput?.id ?? 'unknown'}).`,
+      })
+    }
 
     return Response.json(object)
   } catch (err) {
