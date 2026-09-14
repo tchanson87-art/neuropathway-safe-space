@@ -14,6 +14,11 @@ import {
   Check,
   Moon,
   Sun,
+  Database,
+  Cpu,
+  Lightbulb,
+  UserCheck,
+  Gavel,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -48,6 +53,47 @@ const IS_NOT = [
   'It is not an emergency or crisis service',
   'It is not an AI chatbot or virtual friend',
   'It never makes decisions about you on its own',
+]
+
+// The human-in-the-loop governance flow. The system organises and highlights;
+// a trained, authorised person always makes the decision.
+const DECISION_FLOW = [
+  {
+    icon: Database,
+    kind: 'system' as const,
+    title: 'Data',
+    desc: "A child's own words, check-ins and everyday observations — recorded over time.",
+  },
+  {
+    icon: Cpu,
+    kind: 'system' as const,
+    title: 'System analysis',
+    desc: 'Entries are organised by need and impact. Nothing is diagnosed or scored as failing.',
+  },
+  {
+    icon: Lightbulb,
+    kind: 'system' as const,
+    title: 'Pattern / information highlight',
+    desc: 'Frequency, triggers and unmet needs are surfaced clearly for a person to read.',
+  },
+  {
+    icon: UserCheck,
+    kind: 'human' as const,
+    title: 'Human review',
+    desc: 'A trained, authorised adult reads the evidence in context — the system never acts alone.',
+  },
+  {
+    icon: Gavel,
+    kind: 'human' as const,
+    title: 'Professional decision',
+    desc: 'The professional decides what it means and what should happen next. They stay accountable.',
+  },
+  {
+    icon: HeartHandshake,
+    kind: 'human' as const,
+    title: 'Action / support',
+    desc: 'Support is put in place early — with the child and family, before things feel too big.',
+  },
 ]
 
 // Verified official figures. Each is individually attributed below.
@@ -274,6 +320,65 @@ export default function LandingPage() {
               <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* How decisions are made */}
+      <section className="border-y border-border bg-card">
+        <div className="mx-auto w-full max-w-5xl px-5 py-14">
+          <h2 className="font-display text-2xl font-bold text-balance sm:text-3xl">
+            How decisions are made
+          </h2>
+          <p className="mt-2 max-w-xl text-muted-foreground text-pretty leading-relaxed">
+            The system highlights; a person decides. Every step moves towards a trained,
+            authorised professional — never an automated judgement about a child.
+          </p>
+
+          <ol className="mt-8 space-y-3">
+            {DECISION_FLOW.map((step, i) => {
+              const isHuman = step.kind === 'human'
+              return (
+                <li key={step.title} className="relative">
+                  <div className="flex items-start gap-4 rounded-2xl border border-border bg-background p-4">
+                    <span
+                      className={
+                        isHuman
+                          ? 'inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground'
+                          : 'inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary'
+                      }
+                    >
+                      <step.icon className="size-5" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <span className="font-display text-base font-bold">
+                          {i + 1}. {step.title}
+                        </span>
+                        <span
+                          className={
+                            isHuman
+                              ? 'rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold tracking-wide text-primary uppercase'
+                              : 'rounded-full bg-muted px-2 py-0.5 text-[11px] font-bold tracking-wide text-muted-foreground uppercase'
+                          }
+                        >
+                          {isHuman ? 'Human decides' : 'System assists'}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-sm text-muted-foreground leading-relaxed text-pretty">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </div>
+                  {i < DECISION_FLOW.length - 1 ? (
+                    <span
+                      className="ml-[38px] flex h-3 w-px items-center bg-border"
+                      aria-hidden="true"
+                    />
+                  ) : null}
+                </li>
+              )
+            })}
+          </ol>
         </div>
       </section>
 
