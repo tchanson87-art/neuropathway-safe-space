@@ -108,6 +108,7 @@ export type SupportRequestType =
   | 'help-now'
   | 'share-entry'
   | 'worried-other'
+  | 'wellbeing-check'
 
 export type SupportRequest = {
   id: string
@@ -439,4 +440,5 @@ export const SUPPORT_REQUEST_LABELS: Record<SupportRequestType, string> = {
   'help-now': 'I need help now',
   'share-entry': 'I want to share an entry',
   'worried-other': 'I am worried about someone else',
+  'wellbeing-check': 'A gentle check-in shared with your trusted adult',
 }

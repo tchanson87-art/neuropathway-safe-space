@@ -127,6 +127,9 @@ type DataContextValue = {
 
   supportRequests: SupportRequest[]
   addSupportRequest: (type: SupportRequestType, sentTo: string, note?: string) => void
+  // Routes an AI-detected wellbeing signal to the child's trusted adult in their
+  // Safe Circle and returns that adult (or null if the circle is empty).
+  raiseWellbeingAlert: (note?: string) => SafeCircleMember | null
 
   patternFlags: PatternFlag[]
   audit: AuditEntry[]
@@ -386,6 +389,46 @@ export function DataProvider({ children }: { children: ReactNode }) {
     [logAudit],
   )
 
+  const raiseWellbeingAlert = useCallback(
+    (note?: string) => {
+      // Prefer the child's Parent / Carer, then a named Trusted adult, then any
+      // circle member. The routing choice: reach the child's own trusted adult,
+      // not a professional queue, keeping this within their Safe Space.
+      const trustedAdult =
+        safeCircle.find((m) => m.role === 'Parent / Carer') ??
+        safeCircle.find((m) => m.role === 'Trusted adult') ??
+        safeCircle[0] ??
+        null
+      if (!trustedAdult) return null
+
+      // Avoid stacking duplicate alerts if a child reflects several times.
+      const alreadyOpen = supportRequests.some(
+        (r) => r.type === 'wellbeing-check' && r.sentTo === trustedAdult.id && r.status !== 'responded',
+      )
+      if (alreadyOpen) return trustedAdult
+
+      const now = new Date()
+      const req: SupportRequest = {
+        id: uid(),
+        type: 'wellbeing-check',
+        sentTo: trustedAdult.id,
+        createdAt: now.toISOString(),
+        receivedAt: new Date(now.getTime() + 1000 * 60).toISOString(),
+        status: 'received',
+        note:
+          note ??
+          'A gentle reflection noticed some things felt really hard recently. Please check in with me when you can.',
+      }
+      setSupportRequests((prev) => [req, ...prev])
+      logAudit(
+        'Wellbeing check-in raised',
+        `Gentle reflection flagged a wellbeing signal · shared with ${trustedAdult.name} (${trustedAdult.role})`,
+      )
+      return trustedAdult
+    },
+    [safeCircle, supportRequests, logAudit],
+  )
+
   const profile = useMemo<ChildProfile>(
     () => ({ name: displayName, accessCode: '' }),
     [displayName],
@@ -415,6 +458,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       updateSupportPrefs,
       supportRequests,
       addSupportRequest,
+      raiseWellbeingAlert,
       patternFlags,
       audit,
     }),
@@ -440,6 +484,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       updateSupportPrefs,
       supportRequests,
       addSupportRequest,
+      raiseWellbeingAlert,
       patternFlags,
       audit,
     ],
