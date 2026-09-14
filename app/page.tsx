@@ -50,6 +50,14 @@ const IS_NOT = [
   'It never makes decisions about you on its own',
 ]
 
+// Verified official figures. Each is individually attributed below.
+const NEED_STATS = [
+  { value: '718,838', label: 'children and young people in England had an EHC plan', token: 'teal' },
+  { value: '46.1%', label: 'of new EHC plans were issued within the statutory 20 weeks', token: 'sky' },
+  { value: '6.0%', label: 'of pupils have an EHC plan — up from 5.3% a year earlier', token: 'lavender' },
+  { value: '14.8%', label: 'of pupils are on SEN support without a plan', token: 'peach' },
+]
+
 export default function LandingPage() {
   const { theme, toggleTheme } = useSettings()
 
@@ -144,6 +152,38 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Why this matters */}
+      <section className="mx-auto w-full max-w-5xl px-5 py-14">
+        <h2 className="font-display text-2xl font-bold text-balance sm:text-3xl">
+          Why early understanding matters
+        </h2>
+        <p className="mt-2 max-w-xl text-muted-foreground text-pretty leading-relaxed">
+          Need is rising and formal support is slow to arrive. Recognising and recording
+          need early — before things feel too big — is how prevention becomes the cure.
+        </p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {NEED_STATS.map((s) => (
+            <div key={s.label} className="rounded-2xl border border-border bg-card p-5">
+              <span
+                className="mb-3 block h-1.5 w-10 rounded-full"
+                style={{ backgroundColor: `var(--${s.token})` }}
+                aria-hidden="true"
+              />
+              <p className="font-display text-3xl font-extrabold tracking-tight">{s.value}</p>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed text-pretty">
+                {s.label}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-5 text-xs text-muted-foreground leading-relaxed">
+          Sources: Department for Education, <span className="italic">Education, health and care
+          plans</span> (England, January 2026) and <span className="italic">Special educational
+          needs in England</span> (2025/26 school census). Figures describe the national picture,
+          not any individual.
+        </p>
       </section>
 
       {/* Areas */}
