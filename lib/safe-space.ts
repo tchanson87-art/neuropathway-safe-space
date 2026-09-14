@@ -108,6 +108,7 @@ export type SupportRequestType =
   | 'help-now'
   | 'share-entry'
   | 'worried-other'
+  | 'wellbeing-check'
 
 export type SupportRequest = {
   id: string
@@ -424,6 +425,18 @@ export const JOURNAL_PROMPTS = [
   'Would you like support from someone in your Safe Circle?',
 ]
 
+/**
+ * Least-privilege gate for sharing. A child may only share a piece of data with
+ * a Safe Circle member who has been explicitly authorised to view that area —
+ * "shared" is never a blanket permission, it is per-person and per-area.
+ */
+export function membersAuthorisedFor(
+  members: SafeCircleMember[],
+  area: ViewableArea,
+): SafeCircleMember[] {
+  return members.filter((m) => m.authorizedToView.includes(area))
+}
+
 export const VIEWABLE_AREA_LABELS: Record<ViewableArea, string> = {
   'check-ins': 'Check-ins',
   journal: 'Journal',
@@ -439,4 +452,5 @@ export const SUPPORT_REQUEST_LABELS: Record<SupportRequestType, string> = {
   'help-now': 'I need help now',
   'share-entry': 'I want to share an entry',
   'worried-other': 'I am worried about someone else',
+  'wellbeing-check': 'A gentle check-in shared with your trusted adult',
 }

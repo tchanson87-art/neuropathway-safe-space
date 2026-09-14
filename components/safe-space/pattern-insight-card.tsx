@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Sparkles, ShieldAlert, Loader2, Heart, Lightbulb } from 'lucide-react'
+import Link from 'next/link'
+import { Sparkles, ShieldAlert, Loader2, Heart, Lightbulb, ArrowRight } from 'lucide-react'
 import { Card } from '@/components/ui/card'
+import { useData } from '@/components/providers/data-provider'
 
 type Insight = {
   safetyAlert: boolean
@@ -20,15 +22,24 @@ type ApiResult =
   | { error: string }
 
 export function PatternInsightCard() {
+  const { raiseWellbeingAlert } = useData()
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<ApiResult | null>(null)
+  const [notifiedAdult, setNotifiedAdult] = useState<string | null>(null)
 
   async function run() {
     setLoading(true)
     setResult(null)
+    setNotifiedAdult(null)
     try {
       const res = await fetch('/api/pattern-insight', { method: 'POST' })
-      setResult((await res.json()) as ApiResult)
+      const data = (await res.json()) as ApiResult
+      setResult(data)
+      // Route a flagged wellbeing signal to the child's trusted adult in their Safe Circle.
+      if (data && !('insufficient' in data) && !('error' in data) && data.safetyAlert) {
+        const adult = raiseWellbeingAlert()
+        setNotifiedAdult(adult ? adult.name.split(' ')[0] : null)
+      }
     } catch {
       setResult({ error: 'Something went wrong. Please try again in a moment.' })
     } finally {
@@ -100,9 +111,17 @@ export function PatternInsightCard() {
                   soon as you can.
                 </p>
                 <p className="mt-2 text-sm font-medium leading-relaxed text-foreground">
-                  A safeguarding review has been logged so a trusted adult can check in with
-                  you. You are not on your own with this.
+                  {notifiedAdult
+                    ? `We've gently let ${notifiedAdult} know you might need a check-in, so someone you trust can be there for you. You are not on your own with this.`
+                    : 'A gentle check-in has been logged so a trusted adult can be there for you. You are not on your own with this.'}
                 </p>
+                <Link
+                  href="/app/support"
+                  className="mt-3 inline-flex min-h-11 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+                >
+                  Reach my Safe Circle now
+                  <ArrowRight className="size-4" />
+                </Link>
               </div>
             </div>
           )}

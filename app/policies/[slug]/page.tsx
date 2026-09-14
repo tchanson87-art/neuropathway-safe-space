@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { ArrowLeft, Check } from 'lucide-react'
 import { Wordmark } from '@/components/safe-space/logo'
 import { SiteFooter } from '@/components/safe-space/site-footer'
+import { SarRequestForm } from '@/components/safe-space/sar-request-form'
 import { POLICIES, getPolicy } from '@/lib/policies'
 
 export function generateStaticParams() {
@@ -82,6 +83,8 @@ export default async function PolicyPage({
             </section>
           ))}
         </div>
+
+        {policy.form === 'sar' ? <SarRequestForm /> : null}
 
         <div className="mt-8 rounded-2xl border-2 border-accent/50 bg-accent/20 p-4 text-sm leading-relaxed text-accent-foreground">
           This is demonstration content for a prototype. It summarises NeuroPathway&apos;s
