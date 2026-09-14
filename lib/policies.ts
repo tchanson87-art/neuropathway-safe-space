@@ -4,7 +4,7 @@
 // for a prototype and is not a substitute for a signed legal agreement.
 
 import type { LucideIcon } from 'lucide-react'
-import { ShieldCheck, Lock, Scale } from 'lucide-react'
+import { ShieldCheck, Lock, Scale, FileSearch } from 'lucide-react'
 
 export type PolicySection = {
   heading: string
@@ -19,6 +19,8 @@ export type Policy = {
   updated: string
   intro: string
   sections: PolicySection[]
+  // When set, the policy page renders an interactive request form below the content.
+  form?: 'sar'
 }
 
 export const POLICIES: Policy[] = [
@@ -107,6 +109,55 @@ export const POLICIES: Policy[] = [
           'Everyday observations are organised into evidence to help adults notice needs sooner.',
           'The aim is prevention — support that begins when patterns first appear, before crisis.',
           'Nothing here diagnoses a child; it describes needs, patterns and functional impact only.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'sar',
+    title: 'Subject Access Requests',
+    icon: FileSearch,
+    summary: 'How to ask for a copy of your information, or to correct or remove it.',
+    updated: 'Prototype — August 2026',
+    form: 'sar',
+    intro:
+      'Under UK GDPR and the Data Protection Act 2018 you have the right to see the personal information held about you, and to ask for it to be corrected or removed. A request to see your information is called a Subject Access Request (SAR). Anyone can make one, and it is free.',
+    sections: [
+      {
+        heading: 'Your data rights',
+        points: [
+          'The right to be told what information is held about you and why (right to be informed).',
+          'The right to a copy of your information (right of access — a Subject Access Request).',
+          'The right to have wrong or incomplete information corrected (right to rectification).',
+          'The right to ask for your information to be deleted (right to erasure).',
+          'The right to ask us to pause using your information while a concern is looked into (right to restrict).',
+        ],
+      },
+      {
+        heading: 'Who can make a request',
+        points: [
+          'A child or young person can make a request about their own information.',
+          'A parent or carer can request on behalf of a child, where that is appropriate for the child’s age and understanding.',
+          'For older children with capacity, their own wishes are respected under the Gillick competence framework.',
+          'We may need to confirm who you are before we share anything, to keep the information safe.',
+        ],
+      },
+      {
+        heading: 'What happens next',
+        points: [
+          'We acknowledge your request and confirm we have received it.',
+          'We respond within one calendar month, as required by UK GDPR.',
+          'If a request is complex we may extend this by up to two further months, and we will tell you why.',
+          'Safeguarding records may be handled separately, and some information can be withheld where sharing it would put someone at risk.',
+        ],
+      },
+      {
+        heading: 'How to make a request',
+        points: [
+          'Use the form below, or email tanja.socialinnovationcic@zohomail.eu.',
+          'Tell us what you would like: a copy, a correction, deletion, or to restrict use.',
+          'You do not have to give a reason for asking to see your own information.',
+          'If you are unhappy with how we handle it, you can complain to the Information Commissioner’s Office (ICO).',
         ],
       },
     ],
