@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, ShieldAlert, BarChart3 } from 'lucide-react'
+import { LayoutDashboard, Users, ClipboardList, ShieldAlert, BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const LINKS = [
   { href: '/pro', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/pro/children', label: 'Children', icon: Users, exact: false },
+  { href: '/pro/portals', label: 'Portals', icon: ClipboardList, exact: false },
   { href: '/pro/safeguarding', label: 'Safeguarding', icon: ShieldAlert, exact: false },
   { href: '/pro/pilot', label: 'Pilot', icon: BarChart3, exact: false },
 ]
