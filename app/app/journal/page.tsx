@@ -24,6 +24,7 @@ import {
 import { useData } from '@/components/providers/data-provider'
 import {
   JOURNAL_PROMPTS,
+  membersAuthorisedFor,
   type JournalCategory,
   type JournalType,
   type Sharing,
@@ -64,6 +65,11 @@ export default function JournalPage() {
   const [category, setCategory] = useState<JournalCategory>('general')
   const [promptUsed, setPromptUsed] = useState<string>('')
   const [sharing, setSharing] = useState<Sharing>('private')
+  const [sharedWith, setSharedWith] = useState<string[]>([])
+  const [shareError, setShareError] = useState(false)
+
+  // Least-privilege: only adults explicitly authorised to view journals can be chosen.
+  const journalRecipients = membersAuthorisedFor(safeCircle, 'journal')
 
   function reset() {
     setType('text')
@@ -72,10 +78,29 @@ export default function JournalPage() {
     setCategory('general')
     setPromptUsed('')
     setSharing('private')
+    setSharedWith([])
+    setShareError(false)
+  }
+
+  function toggleRecipient(id: string) {
+    setShareError(false)
+    setSharedWith((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]))
+  }
+
+  function chooseSharing(next: Sharing) {
+    setSharing(next)
+    setShareError(false)
+    if (next === 'private') setSharedWith([])
   }
 
   function save() {
     if (!title.trim() && !body.trim()) return
+    // Tight sharing: an entry marked "shared" must name at least one authorised adult,
+    // otherwise it stays private rather than being shared with nobody or everybody.
+    if (sharing === 'shared' && sharedWith.length === 0) {
+      setShareError(true)
+      return
+    }
     addJournalEntry({
       type,
       title: title.trim() || 'Untitled entry',
@@ -83,7 +108,7 @@ export default function JournalPage() {
       category,
       promptUsed: promptUsed || undefined,
       sharing,
-      sharedWith: [],
+      sharedWith: sharing === 'shared' ? sharedWith : [],
     })
     reset()
     setComposing(false)
@@ -214,7 +239,8 @@ export default function JournalPage() {
           <div className="mb-4 grid gap-3 sm:grid-cols-2">
             <button
               type="button"
-              onClick={() => setSharing('private')}
+              onClick={() => chooseSharing('private')}
+              aria-pressed={sharing === 'private'}
               className={cn(
                 'rounded-2xl border-2 p-4 text-left font-semibold transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none',
                 sharing === 'private' ? 'border-primary bg-primary/8' : 'border-border',
@@ -227,7 +253,8 @@ export default function JournalPage() {
             </button>
             <button
               type="button"
-              onClick={() => setSharing('shared')}
+              onClick={() => chooseSharing('shared')}
+              aria-pressed={sharing === 'shared'}
               className={cn(
                 'rounded-2xl border-2 p-4 text-left font-semibold transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none',
                 sharing === 'shared' ? 'border-primary bg-primary/8' : 'border-border',
@@ -235,14 +262,60 @@ export default function JournalPage() {
             >
               Share with someone I trust
               <span className="block text-sm font-normal text-muted-foreground">
-                You choose who, on the entry
+                You choose exactly who
               </span>
             </button>
           </div>
 
+          {sharing === 'shared' && (
+            <div className="mb-4">
+              {journalRecipients.length > 0 ? (
+                <>
+                  <SectionLabel>Choose who can see this entry</SectionLabel>
+                  <p className="mb-2 text-sm text-muted-foreground leading-relaxed">
+                    Only these adults can be chosen, because only they are allowed to see
+                    journal entries. Nobody else will ever see it.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {journalRecipients.map((m) => {
+                      const on = sharedWith.includes(m.id)
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => toggleRecipient(m.id)}
+                          aria-pressed={on}
+                          className={cn(
+                            'inline-flex min-h-11 items-center gap-2 rounded-full border-2 px-4 text-sm font-semibold transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none',
+                            on
+                              ? 'border-primary bg-primary/10'
+                              : 'border-border text-muted-foreground hover:border-primary/40',
+                          )}
+                        >
+                          {on && <Eye className="size-4 text-primary" />}
+                          {m.name} · {m.role}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {shareError && (
+                    <p className="mt-2 text-sm font-semibold text-destructive">
+                      Please choose at least one person, or keep it private.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <div className="rounded-2xl border-2 border-accent/40 bg-accent/15 p-4 text-sm leading-relaxed text-accent-foreground">
+                  No one in your Safe Circle is set up to see journal entries yet, so this
+                  will stay private. A parent, carer or key worker can help you set that up.
+                </div>
+              )}
+            </div>
+          )}
+
           <PrivacyNote>
-            Your words stay in your words. Adults can only read what you choose to share,
-            and they cannot change what you have written.
+            Your words stay in your words. An entry is only ever seen by the exact people
+            you name here, and they cannot change what you have written.
           </PrivacyNote>
 
           <div className="mt-5 flex gap-3">

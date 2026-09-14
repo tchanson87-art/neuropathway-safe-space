@@ -425,6 +425,18 @@ export const JOURNAL_PROMPTS = [
   'Would you like support from someone in your Safe Circle?',
 ]
 
+/**
+ * Least-privilege gate for sharing. A child may only share a piece of data with
+ * a Safe Circle member who has been explicitly authorised to view that area —
+ * "shared" is never a blanket permission, it is per-person and per-area.
+ */
+export function membersAuthorisedFor(
+  members: SafeCircleMember[],
+  area: ViewableArea,
+): SafeCircleMember[] {
+  return members.filter((m) => m.authorizedToView.includes(area))
+}
+
 export const VIEWABLE_AREA_LABELS: Record<ViewableArea, string> = {
   'check-ins': 'Check-ins',
   journal: 'Journal',
