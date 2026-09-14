@@ -37,10 +37,26 @@ export function SiteFooter() {
           information only.
         </p>
 
+        <p className="mt-4 text-sm text-muted-foreground">
+          Contact:{' '}
+          <a
+            href="mailto:tanja.socialinnovationcic@zohomail.eu"
+            className="font-semibold text-primary transition-colors hover:text-primary/80 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+          >
+            tanja.socialinnovationcic@zohomail.eu
+          </a>
+        </p>
+
+        <p className="mt-4 text-xs leading-relaxed text-muted-foreground text-pretty">
+          NeuroPathway&trade;, NeuroPathway Safe Space&trade; and Prevention Is the
+          Cure&trade; are trademarks of NeuroPathway Social Innovation CIC. All associated
+          names, logos and branding are protected and may not be used without permission.
+        </p>
+
         <div className="mt-8 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} NeuroPathway&trade; Safe Space. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} NeuroPathway&trade; Safe Space&trade;. All
+            rights reserved.
           </p>
           <p>
             NeuroPathway Social Innovation CIC &middot; Company No.{' '}

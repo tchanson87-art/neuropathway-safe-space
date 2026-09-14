@@ -69,6 +69,25 @@ export default async function ProLayout({ children }: { children: ReactNode }) {
       </header>
 
       <main className="mx-auto w-full max-w-6xl px-4 py-6 pb-20">{children}</main>
+
+      <footer className="border-t border-border bg-card">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <p className="leading-relaxed text-pretty">
+            NeuroPathway&trade;, NeuroPathway Safe Space&trade; and Prevention Is the
+            Cure&trade; are trademarks of NeuroPathway Social Innovation CIC (Company No.{' '}
+            <span className="font-medium text-foreground">17366103</span>).
+          </p>
+          <p className="shrink-0">
+            Contact:{' '}
+            <a
+              href="mailto:tanja.socialinnovationcic@zohomail.eu"
+              className="font-semibold text-primary transition-colors hover:text-primary/80 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            >
+              tanja.socialinnovationcic@zohomail.eu
+            </a>
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
