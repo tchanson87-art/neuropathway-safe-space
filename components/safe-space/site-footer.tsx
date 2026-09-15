@@ -47,6 +47,19 @@ export function SiteFooter() {
           </a>
         </p>
 
+        <p className="mt-4 text-sm text-muted-foreground">
+          In partnership with{' '}
+          <a
+            href="https://neuro-kids-space.co.uk/"
+            target="_blank"
+            rel="sponsored noopener noreferrer"
+            className="font-semibold text-primary transition-colors hover:text-primary/80 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+          >
+            NeuroKids Space
+          </a>{' '}
+          by Duane Walters.
+        </p>
+
         <p className="mt-4 text-xs leading-relaxed text-muted-foreground text-pretty">
           NeuroPathway&trade;, NeuroPathway Safe Space&trade; and Prevention Is the
           Cure&trade; are trademarks of NeuroPathway Social Innovation CIC. All associated
