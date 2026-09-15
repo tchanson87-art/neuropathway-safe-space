@@ -19,6 +19,7 @@ import {
   Lightbulb,
   UserCheck,
   Gavel,
+  ExternalLink,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -380,6 +381,36 @@ export default function LandingPage() {
             })}
           </ol>
         </div>
+      </section>
+
+      {/* Partners */}
+      <section className="mx-auto w-full max-w-5xl px-5 py-14">
+        <h2 className="font-display text-2xl font-bold text-balance sm:text-3xl">
+          Friends &amp; partners
+        </h2>
+        <p className="mt-2 max-w-xl text-muted-foreground text-pretty leading-relaxed">
+          We share our mission with others working to support neurodivergent children and
+          their families.
+        </p>
+        <a
+          href="https://neuro-kids-space.co.uk/"
+          target="_blank"
+          rel="sponsored noopener noreferrer"
+          className="mt-8 block rounded-3xl border border-border bg-card p-6 transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+        >
+          <p className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 text-xs font-bold tracking-wide text-secondary-foreground uppercase">
+            Partner spotlight
+          </p>
+          <h3 className="mt-4 font-display text-xl font-bold">NeuroKids Space</h3>
+          <p className="mt-2 max-w-xl text-muted-foreground leading-relaxed text-pretty">
+            A calm, joyful space for neurodivergent kids — offering EHCP support, an AI
+            companion and school sync. Created by Duane Walters.
+          </p>
+          <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
+            Visit neuro-kids-space.co.uk
+            <ExternalLink className="size-4" />
+          </span>
+        </a>
       </section>
 
       {/* CTA */}
