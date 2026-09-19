@@ -35,12 +35,12 @@ const CORE_MESSAGES = [
 ]
 
 const AREAS = [
-  { icon: Home, title: 'Home', desc: 'A calm starting point with a gentle greeting and no pressure.' },
-  { icon: HeartHandshake, title: 'My Check-In', desc: 'Show how you feel with words, colours or pictures.' },
-  { icon: NotebookPen, title: 'My Journal', desc: 'Write, speak or draw your day — privately, or shared if you choose.' },
-  { icon: Target, title: 'My Goals', desc: 'Break something you care about into small, doable steps.' },
-  { icon: Sparkles, title: 'What Helps Me', desc: 'Build a "How to Support Me" profile in your own words.' },
-  { icon: Users, title: 'My Safe Circle', desc: 'Choose trusted adults and control what they can see.' },
+  { icon: Home, title: 'Home', desc: 'A calm starting point with a gentle greeting and no pressure.', token: 'teal' },
+  { icon: HeartHandshake, title: 'My Check-In', desc: 'Show how you feel with words, colours or pictures.', token: 'sky' },
+  { icon: NotebookPen, title: 'My Journal', desc: 'Write, speak or draw your day — privately, or shared if you choose.', token: 'lavender' },
+  { icon: Target, title: 'My Goals', desc: 'Break something you care about into small, doable steps.', token: 'peach' },
+  { icon: Sparkles, title: 'What Helps Me', desc: 'Build a "How to Support Me" profile in your own words.', token: 'teal' },
+  { icon: Users, title: 'My Safe Circle', desc: 'Choose trusted adults and control what they can see.', token: 'sky' },
 ]
 
 const IS = [
@@ -244,12 +244,22 @@ export default function LandingPage() {
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {AREAS.map((a) => (
-            <div key={a.title} className="rounded-2xl border border-border bg-card p-5">
-              <span className="mb-4 inline-flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <div
+              key={a.title}
+              className="rounded-2xl border p-5"
+              style={{
+                backgroundColor: `color-mix(in srgb, var(--${a.token}) 10%, var(--card))`,
+                borderColor: `color-mix(in srgb, var(--${a.token}) 35%, var(--border))`,
+              }}
+            >
+              <span
+                className="mb-4 inline-flex size-12 items-center justify-center rounded-2xl text-foreground"
+                style={{ backgroundColor: `color-mix(in srgb, var(--${a.token}) 55%, transparent)` }}
+              >
                 <a.icon className="size-6" />
               </span>
-              <h3 className="font-display text-lg font-semibold">{a.title}</h3>
-              <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{a.desc}</p>
+              <h3 className="font-display text-lg font-bold">{a.title}</h3>
+              <p className="mt-1.5 text-[15px] leading-relaxed text-foreground/80">{a.desc}</p>
             </div>
           ))}
         </div>
@@ -301,24 +311,37 @@ export default function LandingPage() {
               icon: Lock,
               title: 'Privacy by default',
               desc: 'Entries are private unless the child chooses to share. Data minimisation, clear correction and access routes, and full audit trails.',
+              token: 'teal',
             },
             {
               icon: ShieldCheck,
               title: 'Human-led safeguarding',
               desc: 'Any concern is routed only to authorised, trained people. AI never decides whether a child is safe and never contacts emergency services.',
+              token: 'lavender',
             },
             {
               icon: Accessibility,
               title: 'Accessible for everyone',
               desc: 'Low-stimulation mode, light and dark themes, adjustable text, read-aloud support and reduced motion — set by the young person.',
+              token: 'peach',
             },
           ].map((c) => (
-            <div key={c.title} className="rounded-2xl border border-border bg-card p-5">
-              <span className="mb-4 inline-flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <div
+              key={c.title}
+              className="rounded-2xl border p-5"
+              style={{
+                backgroundColor: `color-mix(in srgb, var(--${c.token}) 10%, var(--background))`,
+                borderColor: `color-mix(in srgb, var(--${c.token}) 35%, var(--border))`,
+              }}
+            >
+              <span
+                className="mb-4 inline-flex size-12 items-center justify-center rounded-2xl text-foreground"
+                style={{ backgroundColor: `color-mix(in srgb, var(--${c.token}) 55%, transparent)` }}
+              >
                 <c.icon className="size-6" />
               </span>
-              <h3 className="font-display text-lg font-semibold">{c.title}</h3>
-              <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
+              <h3 className="font-display text-lg font-bold">{c.title}</h3>
+              <p className="mt-1.5 text-[15px] leading-relaxed text-foreground/80">{c.desc}</p>
             </div>
           ))}
         </div>
