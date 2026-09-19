@@ -141,6 +141,7 @@ const FUNCTIONAL_IMPACT: Record<NpDomain, string> = {
   learning_executive: 'Affects attention, organisation and completing everyday tasks.',
   behavioural: 'Affects participation and often signals an unmet need underneath the behaviour.',
   daily_living: 'Affects independence and everyday routines at home and at school.',
+  strengths: 'Highlights what the child does well and what helps — build support around these, not just needs.',
 }
 
 // Recommended support framed to each lens's own purpose. Falls back to a

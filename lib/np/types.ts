@@ -20,6 +20,7 @@ export type NpDomain =
   | 'learning_executive'
   | 'behavioural'
   | 'daily_living'
+  | 'strengths'
 
 export const DOMAIN_LABELS: Record<string, string> = {
   emotional_regulation: 'Emotional regulation',
@@ -29,6 +30,7 @@ export const DOMAIN_LABELS: Record<string, string> = {
   learning_executive: 'Learning & executive function',
   behavioural: 'Behavioural patterns',
   daily_living: 'Daily living',
+  strengths: 'Strengths & what helps',
 }
 
 export const SETTING_LABELS: Record<string, string> = {

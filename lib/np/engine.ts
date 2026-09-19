@@ -138,6 +138,8 @@ function escalationCandidates(shared: NpObservation[]): PatternCandidate[] {
   const byDomain = new Map<string, NpObservation[]>()
   for (const o of shared) {
     if (!o.domain || o.intensity == null) continue
+    // Strengths are recorded to build support around, never surfaced as a rising concern.
+    if (o.domain === 'strengths') continue
     const arr = byDomain.get(o.domain) ?? []
     arr.push(o)
     byDomain.set(o.domain, arr)
