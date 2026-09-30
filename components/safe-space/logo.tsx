@@ -25,6 +25,20 @@ export function Logo({ className }: { className?: string }) {
   )
 }
 
+export function SafeSpaceWordmark({ className }: { className?: string }) {
+  return (
+    <div className={cn('flex items-center gap-3', className)}>
+      <Logo className="size-10" />
+      <div className="leading-tight">
+        <div className="font-display text-xl font-bold tracking-tight">Safe Space</div>
+        <div className="text-[0.65rem] uppercase tracking-[0.2em] opacity-70">
+          NeuroPathway ecosystem
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function Wordmark({
   className,
   showOrg = false,

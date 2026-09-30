@@ -1,21 +1,16 @@
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
-import { Nunito, Baloo_2 } from 'next/font/google'
+import { Courier_Prime } from 'next/font/google'
 import { Suspense } from 'react'
 import './globals.css'
 import { SettingsProvider } from '@/components/providers/settings-provider'
 import { DataProvider } from '@/components/providers/data-provider'
 
-const nunito = Nunito({
+const courier = Courier_Prime({
   subsets: ['latin'],
-  variable: '--font-nunito',
-  display: 'swap',
-})
-
-const baloo = Baloo_2({
-  subsets: ['latin'],
-  variable: '--font-baloo',
+  weight: ['400', '700'],
+  variable: '--font-courier',
   display: 'swap',
 })
 
@@ -43,7 +38,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f4f6fd' },
+    { media: '(prefers-color-scheme: light)', color: '#12283a' },
     { media: '(prefers-color-scheme: dark)', color: '#0f1a3a' },
   ],
 }
@@ -55,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="bg-background">
-      <body className={`${nunito.variable} ${baloo.variable} font-sans antialiased`}>
+      <body className={`${courier.variable} font-sans antialiased`}>
         <Suspense fallback={null}>
           <SettingsProvider>
             <DataProvider>{children}</DataProvider>
